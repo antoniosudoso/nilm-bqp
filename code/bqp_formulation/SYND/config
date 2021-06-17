@@ -1,0 +1,15 @@
+4
+1440
+200
+500
+47
+40
+meter3,meter4,meter5,meter9,
+^^^ in the order:
+	n_appliances
+	time horizon
+	lambda1
+	lambda2
+	DAYS
+	DROP
+	appliances labels comma separated

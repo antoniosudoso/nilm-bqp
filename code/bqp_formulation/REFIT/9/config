@@ -1,0 +1,15 @@
+4
+1440
+300
+900
+363
+356
+Appliance1,Appliance3,Appliance4,Appliance7,
+^^^ in the order:
+	n_appliances
+	time horizon
+	lambda1
+	lambda2
+	DAYS
+	DROP
+	appliances labels comma separated

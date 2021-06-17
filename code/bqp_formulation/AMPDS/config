@@ -1,0 +1,15 @@
+6
+1440
+1000
+2000
+45
+38
+clothes_dryer,dish_washer,fan_and_thermostat,entertainment,fridge,heat_pump,
+^^^ in the order:
+	n_appliances
+	time horizon
+	lambda1
+	lambda2
+	DAYS
+	DROP
+	appliances labels comma separated

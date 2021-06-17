@@ -1,0 +1,11 @@
+2       1
+81      53
+42      8
+56
+
+8       10
+170     129
+74      19
+74
+^^^ minimum time in each state, the order is related to the one in the file 
+	power_states_power

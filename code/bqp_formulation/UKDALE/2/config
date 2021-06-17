@@ -1,0 +1,16 @@
+5
+1440
+800
+1500
+38
+31
+meter5,meter8,meter13,meter14,meter18,
+^^^ in the order:
+	n_appliances
+	time horizon
+	Tzone
+	lambda1
+	lambda2
+	DAYS
+	DROP
+	appliances labels comma separated

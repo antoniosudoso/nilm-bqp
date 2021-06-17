@@ -1,0 +1,74 @@
+reset;
+
+# Import model
+model "ar.mod";
+
+option solver gurobi;
+option gurobi_options 'presolve=2';
+
+param T;
+read N, T < "../../REFIT/3/config";
+param order {i in 1..N};
+read {i in 1..N} order[i] < "config";
+read train_size < "config";
+
+param UNUSED;
+read UNUSED < "../../REFIT/3/config";
+read UNUSED < "../../REFIT/3/config";
+
+param DAYS;
+param DROP;
+read DAYS < "../../REFIT/3/config";
+read DROP < "../../REFIT/3/config";
+
+param s {i in 1..N};
+read {i in 1..N} s[i] < "../../REFIT/3/power_states_count";
+
+param P {t in 1..(T * (DAYS-DROP)), i in 1..N};
+for {k in 1..(DAYS-DROP)} {
+	read {i in 1..N, t in 1..T} P[T*(k-1) + t, i] < "../../REFIT/3/out";
+}
+
+param active {t in 1..(T * (DAYS-DROP)), i in 1..N, j in 1..(s[i]+1)} binary;
+for {k in 1..(DAYS-DROP)} {
+	read {i in 1..N, t in 1..T, j in 1..s[i]} active[T*(k-1) + t, i, j+1] < "../../REFIT/3/x";
+	for {i in 1..N, t in 1..T} {
+		let active[T*(k-1) + t, i, 1] := 0;
+	}
+}
+
+param Y {t in 1..(T * (DAYS - DROP)), i in 1..N};
+
+param path symbolic;
+for {i in 1..N} {
+	let S := (s[i] + 1);
+	let p := order[i];
+	let path := "appliance" & (i);
+	read {t in 1..train_size} y[t] < (path);
+	let path := "delta" & (i);
+	read {t in 1..train_size, j in 1..S} delta[t, j] < (path);
+	
+	# Solve
+	solve;
+	display beta > ("beta" & (i));
+	
+	for {j in 2..S} {
+		print beta[1, j] / (1 - sum{h in 1..p}(beta[h+1, j])) > "power_states";
+	}
+	
+	for {t in 1..p} {
+		let Y[t, i] := P[t, i];
+	}
+	for {t in (p+1)..(T * (DAYS-DROP))} {
+		let Y[t, i] := max(0, 
+		sum{j in 1..(s[i]+1)} (active[t, i, j] * 
+			( beta[1, j] + sum{k in 1..p}(beta[k+1, j] * Y[t-k, i]))));
+	}
+}
+
+for {k in 1..(DAYS-DROP)} {
+	for {i in 1..N, t in 1..T} {
+		print Y[(k - 1)*T + t, i] >> "out";
+	}
+}
+

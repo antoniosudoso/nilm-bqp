@@ -1,0 +1,8 @@
+60			300
+
+0			53555
+0			211318
+0           46947
+0           97260
+^^^ maximum power consumption for each appliance, the order is related to the 
+	one in the file power_states_power

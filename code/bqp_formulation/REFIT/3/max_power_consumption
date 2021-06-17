@@ -1,0 +1,8 @@
+60			300
+
+15497		71163
+0			173897
+0			95773
+34800		165300
+^^^ maximum power consumption for each appliance, the order is related to the 
+	one in the file power_states_power

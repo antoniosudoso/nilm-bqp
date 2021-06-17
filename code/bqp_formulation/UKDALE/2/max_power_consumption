@@ -1,0 +1,11 @@
+60          300
+
+3150		15600
+235			58795
+245 		74038
+10146		49434
+2170		10800
+^^^ Tzone
+	
+	maximum power consumption for each appliance, the order is related to the 
+	one in the file power_states_power

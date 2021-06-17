@@ -1,0 +1,77 @@
+reset;
+
+model "nilm_binary.mod";
+
+
+############################ Initialize parameters ############################
+read N, T, lambda1, lambda2 < "config";
+display N, T, lambda1, lambda2;
+read Tzone1, Tzone2 < "max_power_consumption";
+read {i in 1..N} S[i] < "power_states_count";
+read {i in 1..N, j in 1..S[i]} p[i, j] < "power_states_power";
+read {i in 1..N, j in 1..S[i]} a[i, j] < "min_max_in_state_time";
+read {i in 1..N, j in 1..S[i]} b[i, j] < "min_max_in_state_time";
+read {i in 1..N, j in 1..2} m[j, i] < "max_power_consumption";
+read {i in 1..N} w[i] < "w";
+read {i in 1..N} l[i] < "l";
+read {i in 1..N, t in 1..T} s[t, i] < "s";
+read {i in 1..N} u_bound[i] < "u_bound";
+display Tzone1, Tzone2, m;
+
+for {i in 1..N, t in 1..T} {let o[t, i] := 1;}
+
+
+################################ Populate sets ################################
+
+# Initialize "state_machine" set
+let state_machine := {};
+var elem;
+for {i in 1..N} {
+	read elem < "state_machine";
+	if elem > 0 then let state_machine := state_machine union {i};
+}
+
+# Initialize "always_on" set
+let always_on := {};
+for {i in 1..N} {
+	read elem < "always_on";
+	if elem > 0 then let always_on := always_on union {i};
+}
+
+######################## Initialize state transitions #########################
+read {i in state_machine, j in 1..S[i], k in 1..S[i]} U[i, j, k] < "U_matrices";
+read {i in state_machine, j in 1..S[i], k in 1..S[i]} D[i, j, k] < "D_matrices";
+display U, D;
+
+
+############################### Solving problem ###############################
+param DAYS;
+read DAYS < "config";
+param DROP;
+read DROP < "config";
+if DROP > 0 then {
+	for {k in 1..DROP} {
+		read {t in 1..T} y[t] < "total";
+	}
+}
+for {k in (DROP+1)..DAYS} {
+	
+	# Initialize "clipped" set
+	data ("clipped_variables" & (k - DROP) & ".dat");
+	
+	# Read total
+	read {t in 1..T} y[t] < "total";
+	
+	option solver gurobi;
+	option gurobi_options 'outlev=1 presolve=2';
+	solve;
+	
+	for {i in 1..N, t in 1..T} {
+		print sum{j in 1..S[i]}(x[t, i, j] * p[i, j]) >> "out";
+		for {j in 1..S[i]} {
+			print x[t, i, j] >> "x";
+		}
+	}
+	
+	print _solve_elapsed_time >> "solve_time"; 
+}

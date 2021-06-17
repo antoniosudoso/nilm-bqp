@@ -1,0 +1,44 @@
+reset;
+
+# Import model
+model "ar.mod";
+option solver gurobi;
+option gurobi_options 'presolve=2';
+
+# Set N, na, train_size
+param T;
+read N, T < "../AMPDs/config";
+param order {i in 1..N};
+read {i in 1..N} order[i] < "config";
+read train_size < "config";
+
+param UNUSED;
+read UNUSED < "../AMPDs/config";
+read UNUSED < "../AMPDs/config";
+
+param DAYS;
+param DROP;
+read DAYS < "../AMPDs/config";
+read DROP < "../AMPDs/config";
+
+param s {i in 1..N};
+read {i in 1..N} s[i] < "../AMPDs/power_states_count";
+
+param path symbolic;
+for {i in 1..N} {
+	let S := (s[i] + 1);
+	let p := order[i];
+	let path := "appliance" & (i);
+	read {t in 1..train_size} y[t] < (path);
+	let path := "delta" & (i);
+	read {t in 1..train_size, j in 1..S} delta[t, j] < (path);
+	
+	# Solve
+	solve;
+	display beta > ("beta" & (i));
+	
+	for {j in 2..S} {
+		print beta[1, j] / (1 - sum{h in 1..p}(beta[h+1, j])) > "power_states";
+	}
+}
+
