@@ -16,6 +16,6 @@ For each dataset (i.e. AMPDS, UDKALE, REFIT):
 #### Related Work (by the same authors)
 
 > V. Piccialli and A.M. Sudoso, Improving Non-Intrusive Load Disaggregation through an Attention-Based Deep Neural Network. 
-> Energies 2021, 14, 847. https://doi.org/10.3390/en14040847
+> Energies 2021, 14, 847. https://doi.org/10.3390/en14040847.
 
 See the source code [here](https://github.com/antoniosudoso/attention-nilm).
