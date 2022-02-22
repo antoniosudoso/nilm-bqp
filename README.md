@@ -5,7 +5,7 @@ The optimization model is written in [AMPL](https://ampl.com/) and solved with [
 
 If you use this paper in your research please cite:
 > M. Balletti, V. Piccialli and A. M. Sudoso, "Mixed-Integer Nonlinear Programming for State-based Non-Intrusive Load Monitoring". 
-> IEEE Transactions on Smart Grid, doi: 10.1109/TSG.2022.3152147.
+> IEEE Transactions on Smart Grid, https://doi.org/10.1109/TSG.2022.3152147.
 
 ### Main Scripts
 For each dataset (i.e. AMPDS, UDKALE, REFIT):
@@ -13,3 +13,9 @@ For each dataset (i.e. AMPDS, UDKALE, REFIT):
 - AMPL run file `nilm_binary.run` loads the BQP model, reads the data and optimizes the model.
 
 
+#### Related Work (by the same authors)
+
+> V. Piccialli and A.M. Sudoso, Improving Non-Intrusive Load Disaggregation through an Attention-Based Deep Neural Network. 
+> Energies 2021, 14, 847. https://doi.org/10.3390/en14040847
+
+See the source code [here](https://github.com/antoniosudoso/attention-nilm).
