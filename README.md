@@ -6,6 +6,20 @@ The optimization model is written in [AMPL](https://ampl.com/) and solved with [
 If you use this paper in your research please cite:
 > M. Balletti, V. Piccialli and A. M. Sudoso, "Mixed-Integer Nonlinear Programming for State-Based Non-Intrusive Load Monitoring", IEEE Transactions on Smart Grid 2022, vol. 13, no. 4, pp. 3301-3314. https://doi.org/10.1109/TSG.2022.3152147.
 
+Citation export:
+```
+@ARTICLE{tsg9714495,
+author={Balletti, Marco and Piccialli, Veronica and Sudoso, Antonio M.},
+journal={IEEE Transactions on Smart Grid}, 
+title={Mixed-Integer Nonlinear Programming for State-Based Non-Intrusive Load Monitoring}, 
+year={2022},
+volume={13},
+number={4},
+pages={3301-3314},
+doi={10.1109/TSG.2022.3152147}
+}
+```
+
 ### Main Scripts
 For each dataset (i.e. AMPDS, UDKALE, REFIT):
 - AMPL model file `nilm_binary.mod` contains the implementation of the Binary Quadratic Programming (NILM-BQP) model.
